@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pi.vidor.screens.Menu;
 
 //Isso é um teste
+//Testando o galho
 //A classe Main é o nosso Game Loop e implementa os métodos requeridos da classe Game
 
 public class Main extends Game {
