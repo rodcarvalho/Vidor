@@ -8,7 +8,16 @@
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-      <group/>
+      <group>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/Main.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/Hud/Hud.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/ai/Astar.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/screens/Menu.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/screens/PlayScreen.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/ai/List.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/ai/Node.java</file>
+        <file>file:/C:/Users/Francisco/Documents/GitHub/Vidor/core/src/com/pi/vidor/Tools/B2WorldCreator.java</file>
+      </group>
     </open-files>
   </auxiliary>
 </gradle-project-properties>
