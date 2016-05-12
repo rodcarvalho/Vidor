@@ -17,19 +17,14 @@ import com.pi.vidor.screens.PlayScreen;
  *
  * @author Francisco
  */
-public class Vidor extends Sprite {
-    private enum State {STANDING, RUNNING};
-    private State current_state;
-    private State previous_state;
-    
-    private World world;
-    private Body b2body;
+public class Vidor extends Character {
     private TextureRegion vidor_standing;
     
     private Animation vidor_run;
     
     private float state_timer;
     private boolean running_right;
+
 
     public World getWorld() {
         return world;
@@ -49,10 +44,13 @@ public class Vidor extends Sprite {
     
     
     public Vidor(World world, PlayScreen screen) {
-        super(screen.getAtlas().findRegion("little_vidor"));
+        screen.getAtlas().findRegion("little_vidor");
+        //super(screen.getAtlas().findRegion("little_vidor"));
         this.world = world;
-        current_state = State.STANDING;
-        previous_state = State.STANDING;
+        setCurrent_state(State.STANDING);
+        setPrevious_state(State.STANDING);
+        //current_state = State.STANDING;
+        //previous_state = State.STANDING;
         state_timer = 0;
         running_right = true;
         
@@ -63,7 +61,7 @@ public class Vidor extends Sprite {
         vidor_run = new Animation(0.1f, frames);
         frames.clear();
         
-        defineVidor();
+        defineBody();
         
         vidor_standing = new TextureRegion(getTexture(), 71, 0, 16, 16);
         setBounds(71, 0, 16 / Main.getPPM(), 16 / Main.getPPM());
@@ -110,26 +108,26 @@ public class Vidor extends Sprite {
         else
             return State.STANDING;
     }
-    
-    private void defineVidor() {
+
+    @Override
+    public void defineBody() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(320 / Main.getPPM(), 240 / Main.getPPM());
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = true;
         bdef.linearDamping = 5.0f;
-        b2body = world.createBody(bdef);
+        setB2body(world.createBody(bdef););
+        //b2body = world.createBody(bdef);
         b2body.setFixedRotation(true);
-        
+
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(8 / Main.getPPM());
-        
+
         fdef.shape = shape;
-        
+
         b2body.createFixture(fdef);
-        
-        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
