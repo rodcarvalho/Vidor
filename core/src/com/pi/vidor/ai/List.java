@@ -11,19 +11,19 @@ public class List {
     
     private ArrayList<Node> list = new ArrayList<Node>();
     
-    public void inserir (Node node) {
+    public void insertNode (Node node) {
         list.add(node);
     }
     
-    public void remover (Node node) {
+    public void removeNode (Node node) {
         list.remove(node);
     }
     
-    public boolean get (Node node) {
+    public boolean getNode (Node node) {
         return list.contains(node);
     }
     
-    public int tamanho () {
+    public int size () {
         return list.size();
     }
     

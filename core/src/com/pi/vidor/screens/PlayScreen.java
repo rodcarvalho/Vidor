@@ -84,6 +84,10 @@ public class PlayScreen implements Screen {
     public TextureAtlas getAtlas() {
         return atlas;
     }
+
+    public TiledMap getMap() {
+        return map;
+    }
     
     @Override
     public void show() {
@@ -125,7 +129,12 @@ public class PlayScreen implements Screen {
             gamecam.position.x = player.getB2body().getPosition().x;
             gamecam.position.y = player.getB2body().getPosition().y;
         }
-         */
+        else {
+            gamecam.position.x = 320 / Main.getPPM();
+            gamecam.position.y = 239 / Main.getPPM();
+        }
+        */
+        
 
         gamecam.position.x = player.getB2body().getPosition().x;
         gamecam.position.y = player.getB2body().getPosition().y;
