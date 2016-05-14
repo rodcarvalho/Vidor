@@ -1,6 +1,4 @@
-
 package com.pi.vidor.ai;
-
 import java.util.ArrayList;
 
 /**
@@ -10,7 +8,7 @@ import java.util.ArrayList;
 public class List {
     
     private ArrayList<Node> list = new ArrayList<Node>();
-    
+   
     public void insertNode (Node node) {
         list.add(node);
     }
