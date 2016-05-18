@@ -11,7 +11,7 @@ import com.pi.vidor.screens.PlayScreen;
  */
 public class Wolf extends Enemy {
     public Wolf(){
-        setHealth(2);
+        setHealth(3);
         setWorld();
     }
 
