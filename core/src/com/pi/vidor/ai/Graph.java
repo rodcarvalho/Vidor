@@ -18,9 +18,17 @@ public class Graph {
         
         this.nodes = new Node[WIDTH][HEIGHT];
         
-        for (int i = 0; i < WIDTH; i++) {
-            for (int k = 0; k < HEIGHT; k++) {
-                nodes[i][k] = new Node(i, k, false);
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                nodes[x][y] = new Node(x, y, false);
+                
+                if (x > 0) nodes[x][y].getAdj().insertNode(nodes[x -1][y]);
+                    //
+                if (y > 0) nodes[x][y].getAdj().insertNode(nodes[x][y -1]);
+                    //
+                if (x < WIDTH - 1) nodes[x][y].getAdj().insertNode(nodes[x + 1][y]);
+                    //
+                if (y < HEIGHT - 1) nodes[x][y].getAdj().insertNode(nodes[x][y + 1]);
             }
         }
     }
@@ -33,7 +41,7 @@ public class Graph {
         return HEIGHT;
     }
 
-    public Node getNodes(int x, int y) {
+    public Node getNode(int x, int y) {
         return this.nodes[x][y];
     }
     

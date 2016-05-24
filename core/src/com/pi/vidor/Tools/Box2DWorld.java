@@ -11,13 +11,18 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.pi.vidor.Main;
+import com.pi.vidor.screens.PlayScreen;
+import com.pi.vidor.sprites.Item;
 
 /**
  *
  * @author Francisco
  */
-public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map) {
+public class Box2DWorld {
+    public Box2DWorld(PlayScreen screen) {
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
+        
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -50,6 +55,12 @@ public class B2WorldCreator {
             shape.setAsBox((rect.getWidth() / 2) / Main.getPPM(), (rect.getHeight() / 2) / Main.getPPM());
             fdef.shape = shape;
             body.createFixture(fdef);
+        }
+        
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            
+            new Item(screen, rect);
         }
         
     }

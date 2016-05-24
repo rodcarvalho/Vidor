@@ -4,9 +4,11 @@ package com.pi.vidor.ai;
  *
  * @author Francisco
  */
+
 public class Node {
     
     private int x, y;
+    private int cost;
     private boolean collidable;
     private List adj;
     private Node parent;
@@ -15,6 +17,8 @@ public class Node {
         this.x = x;
         this.y = y;
         this.collidable = collidable;
+        this.adj = null;
+        this.cost = 1;
     }
 
     public int getX() {
@@ -36,7 +40,7 @@ public class Node {
     public boolean isCollidable() {
         return collidable;
     }
-
+    
     public void setCollidable(boolean collidable) {
         this.collidable = collidable;
     }
@@ -47,6 +51,14 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    public List getAdj() {
+        return adj;
+    }    
+
+    public int getCost() {
+        return cost;
     }
     
 }

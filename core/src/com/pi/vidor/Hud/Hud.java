@@ -26,15 +26,15 @@ public class Hud implements Disposable {
     
     private Integer world_timer;
     private float time_count;
-    private Integer score;
+    private static Integer score;
     
     //variáveis do tipo Label para armazenamento dos rótulos
-    Label countdown_label;
-    Label score_label;
-    Label time_label;
-    Label level_label;
-    Label world_label;
-    Label vidor_label;
+    private Label countdown_label;
+    private static Label score_label;
+    private Label time_label;
+    private Label level_label;
+    private Label world_label;
+    private Label vidor_label;
     
     public Hud(SpriteBatch sb) {
         world_timer = 300;
@@ -75,6 +75,20 @@ public class Hud implements Disposable {
         //adiciona a tabela ao 'container' do tipo Stage
         stage.addActor(table);
         
+    }
+    
+    public void update(float delta) {
+        time_count += delta;
+        if (time_count >= 1) {
+            world_timer--;
+            countdown_label.setText(String.format("%03d", world_timer));
+            time_count = 0;
+        }
+    }
+    
+    public static void addScore(int value) {
+        score += value;
+        score_label.setText(String.format("%06d", score));
     }
 
     @Override

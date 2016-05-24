@@ -10,11 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.pi.vidor.Main;
 
 /**
  *
@@ -37,12 +33,13 @@ public abstract class Character extends Sprite {
     
     public abstract void defineBody();
 
-    public World getWorld() {
-        return world;
+    public Character(TextureAtlas atlas, World world) {
+        super(atlas.findRegion("little_vidor"));
+        this.world = world;
     }
 
-    public void setWorld(World world) {
-        this.world = world;
+    public World getWorld() {
+        return world;
     }
 
     public Body getB2body() {

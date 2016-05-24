@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -16,7 +17,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pi.vidor.Hud.Hud;
 import com.pi.vidor.Main;
-import com.pi.vidor.Tools.B2WorldCreator;
+import com.pi.vidor.Tools.Box2DWorld;
+import com.pi.vidor.Tools.WorldContactListener;
+import com.pi.vidor.ai.Graph;
 import com.pi.vidor.sprites.Vidor;
 
 /**
@@ -29,6 +32,7 @@ public class PlayScreen implements Screen {
     private Main game;
     private TextureAtlas atlas;
     private Vidor player;
+    //private Wolf wolf;
     
     //câmera do jogo e o tratador da resolução
     private OrthographicCamera gamecam;
@@ -40,10 +44,17 @@ public class PlayScreen implements Screen {
     private TmxMapLoader maploader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer map_renderer;
+    private MapProperties properties;
+    private int mapWidth;
+    private int mapHeight;
     
     //Variáveis para o Box2D
     private World world;
     private Box2DDebugRenderer b2dr; //Nos dá a representação gráfica dos objetos do mundo box2D
+    
+    //
+    private Graph graph;
+    
     
     public PlayScreen(Main game) {
         //
@@ -71,22 +82,46 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
         
-        new B2WorldCreator(world, map);
+        new Box2DWorld(this);
         
         //
-        player = new Vidor(world, this);
+        player = new Vidor(this);
+        
+        //
+        //wolf = new Wolf(this, 0 / Main.getPPM(), 0 / Main.getPPM());
+        
+        world.setContactListener(new WorldContactListener());
         
         b2dr.SHAPE_STATIC.set(1,0,0,1);
         b2dr.SHAPE_NOT_AWAKE.set(1, 0, 0, 1);
         b2dr.SHAPE_AWAKE.set(1, 1, 1, 1);
+        
+        //
+        properties = map.getProperties();
+        mapWidth = properties.get("width", Integer.class);
+        mapHeight = properties.get("height", Integer.class);
+        
+        graph = new Graph(this);
     }
 
     public TextureAtlas getAtlas() {
         return atlas;
     }
 
+    public World getWorld() {
+        return world;
+    }
+
     public TiledMap getMap() {
         return map;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
     }
     
     @Override
@@ -96,20 +131,25 @@ public class PlayScreen implements Screen {
     public void handleInput(float delta) {
         //Controlar o jogador
         if (Gdx.input.isKeyPressed(Input.Keys.UP) && player.getB2body().getLinearVelocity().y <= 2) {
-            player.getB2body().applyLinearImpulse(new Vector2(0, 0.1f), player.getB2body().getWorldCenter(), true);
+            player.getB2body().applyLinearImpulse(new Vector2(0, 0.15f), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(0, player.getB2body().getLinearVelocity().y);
+            System.out.println(graph.getNode(0, 0).getAdj() + "LISTA ADJACENCIA");
+            //System.out.println("posicao em y: " + player.getB2body().getPosition().y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && player.getB2body().getLinearVelocity().y >= -2) {
-            player.getB2body().applyLinearImpulse(new Vector2(0, -0.1f), player.getB2body().getWorldCenter(), true);
+            player.getB2body().applyLinearImpulse(new Vector2(0, -0.15f), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(0, player.getB2body().getLinearVelocity().y);
+            //System.out.println("posicao em y: " + player.getB2body().getPosition().y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.getB2body().getLinearVelocity().x <= 2) {
-            player.getB2body().applyLinearImpulse(new Vector2(0.1f, 0), player.getB2body().getWorldCenter(), true);
+            player.getB2body().applyLinearImpulse(new Vector2(0.15f, 0), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(player.getB2body().getLinearVelocity().x, 0);
+            //System.out.println("posicao em x: " + player.getB2body().getPosition().x);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.getB2body().getLinearVelocity().x >= -2) {
-            player.getB2body().applyLinearImpulse(new Vector2(-0.1f, 0), player.getB2body().getWorldCenter(), true);
+            player.getB2body().applyLinearImpulse(new Vector2(-0.15f, 0), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(player.getB2body().getLinearVelocity().x, 0);
+            //System.out.println("posicao em x: " + player.getB2body().getPosition().x);
         }
             
     }
@@ -123,7 +163,8 @@ public class PlayScreen implements Screen {
         
         //
         player.update(delta);
-        
+        //wolf.update(delta);
+        hud.update(delta);
         /*
         if (player.getB2body().getPosition().x >= 320 / Main.getPPM() && player.getB2body().getPosition().y >= 240 / Main.getPPM()) {
             gamecam.position.x = player.getB2body().getPosition().x;
@@ -135,6 +176,8 @@ public class PlayScreen implements Screen {
         }
         */
         
+        //if (wolf.getB2body().getPosition().x > 500 / Main.getPPM())
+        //    wolf.reverseVelocity(true, false);
 
         gamecam.position.x = player.getB2body().getPosition().x;
         gamecam.position.y = player.getB2body().getPosition().y;
@@ -159,12 +202,13 @@ public class PlayScreen implements Screen {
         map_renderer.render();
         
         //renderiza as formas do mundo Box2D
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
         
         //Abre o 'container' ou 'batch' de sprites, desenha a textura passada no argumento nas coordenadas informadas e, por fim, fecha o 'batch'
         game.getBatch().setProjectionMatrix(gamecam.combined);
         game.getBatch().begin();
         player.draw(game.getBatch());
+        //wolf.draw(game.getBatch());
         game.getBatch().end();
         
         //reconhece onde a câmera do jogo está e renderiza apenas o que pode ser visto por ela
