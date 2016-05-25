@@ -20,17 +20,13 @@ public abstract class Character extends Sprite {
     private enum State {STANDING, RUNNING, ATTACKING};
     private State current_state;
     private State previous_state;
-
     private World world;
     private Body b2body;
-    
-    private int health;
-    
     private Animation run;
     private Animation attack;
-    
     private TextureRegion texture;
-    
+    private int health;
+
     public abstract void defineBody();
 
     public Character(TextureAtlas atlas, World world) {

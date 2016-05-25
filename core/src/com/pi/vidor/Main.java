@@ -1,6 +1,5 @@
 package com.pi.vidor;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pi.vidor.screens.Menu;

@@ -14,6 +14,7 @@ import com.pi.vidor.screens.PlayScreen;
  * Created by rodrigo.bcarvalho1 on 10/05/2016.
  */
 public class Wolf extends Enemy {
+<<<<<<< HEAD
     private float state_time;
     private Animation animation;
     private Array<TextureRegion> frames;
@@ -37,6 +38,11 @@ public class Wolf extends Enemy {
         setRegion(animation.getKeyFrame(state_time, true));
         b2body.setLinearVelocity(velocity);
         
+=======
+    public Wolf(){
+        setHealth(3);
+        setWorld();
+>>>>>>> origin/RoBranch
     }
     
     
