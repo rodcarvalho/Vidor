@@ -1,5 +1,7 @@
 package com.pi.vidor.ai;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  *
  * @author Francisco
@@ -8,17 +10,16 @@ package com.pi.vidor.ai;
 public class Node {
     
     private int x, y;
-    private int cost;
+    private Vector2 worldPos;
+    private int f, g, h;
     private boolean collidable;
-    private List adj;
     private Node parent;
 
-    public Node(int x, int y, boolean collidable) {
+    public Node(int x, int y, Vector2 worldPos, boolean collidable) {
         this.x = x;
         this.y = y;
+        this.worldPos = worldPos;
         this.collidable = collidable;
-        this.adj = null;
-        this.cost = 1;
     }
 
     public int getX() {
@@ -53,12 +54,28 @@ public class Node {
         this.parent = parent;
     }
 
-    public List getAdj() {
-        return adj;
-    }    
+    public int getG() {
+        return g;
+    }
 
-    public int getCost() {
-        return cost;
+    public void setG(int g) {
+        this.g = g;
+    }
+    
+    public int getH() {
+        return h;
+    }
+
+    public void setH(int h) {
+        this.h = h;
+    }
+    
+    public int getF() {
+        return g + h;
+    }
+
+    public void setF(int f) {
+        this.f = f;
     }
     
 }

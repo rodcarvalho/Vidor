@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pi.vidor.Hud.Hud;
@@ -77,7 +79,7 @@ public class PlayScreen implements Screen {
         map_renderer = new OrthogonalTiledMapRenderer(map, 1 / Main.getPPM());
         
         //Configura a câmera do jogo inicialmente centralizada
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+//        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
@@ -124,6 +126,18 @@ public class PlayScreen implements Screen {
         return mapHeight;
     }
     
+    public Array<RectangleMapObject> getWalls() {
+        return map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class);
+    }
+    
+    public Array<RectangleMapObject> getObstacles() {
+        return map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class);
+    }
+    
+    public Array<RectangleMapObject> getItems() {
+        return map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class);
+    }
+    
     @Override
     public void show() {
     }
@@ -133,13 +147,10 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.UP) && player.getB2body().getLinearVelocity().y <= 2) {
             player.getB2body().applyLinearImpulse(new Vector2(0, 0.15f), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(0, player.getB2body().getLinearVelocity().y);
-            System.out.println(graph.getNode(0, 0).getAdj() + "LISTA ADJACENCIA");
-            //System.out.println("posicao em y: " + player.getB2body().getPosition().y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && player.getB2body().getLinearVelocity().y >= -2) {
             player.getB2body().applyLinearImpulse(new Vector2(0, -0.15f), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(0, player.getB2body().getLinearVelocity().y);
-            //System.out.println("posicao em y: " + player.getB2body().getPosition().y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.getB2body().getLinearVelocity().x <= 2) {
             player.getB2body().applyLinearImpulse(new Vector2(0.15f, 0), player.getB2body().getWorldCenter(), true);
@@ -149,7 +160,6 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.getB2body().getLinearVelocity().x >= -2) {
             player.getB2body().applyLinearImpulse(new Vector2(-0.15f, 0), player.getB2body().getWorldCenter(), true);
             player.getB2body().setLinearVelocity(player.getB2body().getLinearVelocity().x, 0);
-            //System.out.println("posicao em x: " + player.getB2body().getPosition().x);
         }
             
     }
@@ -165,22 +175,28 @@ public class PlayScreen implements Screen {
         player.update(delta);
         //wolf.update(delta);
         hud.update(delta);
-        /*
-        if (player.getB2body().getPosition().x >= 320 / Main.getPPM() && player.getB2body().getPosition().y >= 240 / Main.getPPM()) {
-            gamecam.position.x = player.getB2body().getPosition().x;
-            gamecam.position.y = player.getB2body().getPosition().y;
+       
+        // Room Transition
+        // Go Right
+        if(player.getB2body().getPosition().x > Main.getWIDTH() / Main.getPPM()) {
+            gamecam.position.x = ((Main.getWIDTH() / Main.getPPM()) / 2) * 3;
         }
-        else {
-            gamecam.position.x = 320 / Main.getPPM();
-            gamecam.position.y = 239 / Main.getPPM();
+        // Go Left
+        if(player.getB2body().getPosition().x < Main.getWIDTH() / Main.getPPM()) {
+            gamecam.position.x = (Main.getWIDTH() / Main.getPPM()) / 2;
         }
-        */
-        
-        //if (wolf.getB2body().getPosition().x > 500 / Main.getPPM())
-        //    wolf.reverseVelocity(true, false);
-
-        gamecam.position.x = player.getB2body().getPosition().x;
-        gamecam.position.y = player.getB2body().getPosition().y;
+        // Go Up
+        if(player.getB2body().getPosition().y > Main.getHEIGHT() / Main.getPPM()) {
+            gamecam.position.y = ((Main.getHEIGHT() / Main.getPPM()) / 2) * 3;
+        }
+        //Go Higher!
+        if(player.getB2body().getPosition().y > (Main.getHEIGHT() / Main.getPPM()) * 2) {
+            gamecam.position.y = ((Main.getHEIGHT() / Main.getPPM()) / 2) * 5;
+        }
+        // Go Down
+        if(player.getB2body().getPosition().y < Main.getHEIGHT() / Main.getPPM()) {
+            gamecam.position.y = (Main.getHEIGHT() / Main.getPPM()) / 2;
+        }
         
         //atualiza constantemente a câmera do jogo
         gamecam.update();
@@ -202,7 +218,7 @@ public class PlayScreen implements Screen {
         map_renderer.render();
         
         //renderiza as formas do mundo Box2D
-        b2dr.render(world, gamecam.combined);
+//        b2dr.render(world, gamecam.combined);
         
         //Abre o 'container' ou 'batch' de sprites, desenha a textura passada no argumento nas coordenadas informadas e, por fim, fecha o 'batch'
         game.getBatch().setProjectionMatrix(gamecam.combined);

@@ -16,6 +16,6 @@ public interface Heuristic {
     }
     */
     
-    public float heuristic(Node n, Node target);
+    public int heuristic(Node n, Node target);
     
 }

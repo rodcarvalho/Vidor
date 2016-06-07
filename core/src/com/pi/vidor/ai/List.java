@@ -9,15 +9,19 @@ public class List {
     
     private ArrayList<Node> list = new ArrayList<Node>();
    
-    public void insertNode (Node node) {
+    public void insertNode(Node node) {
         list.add(node);
     }
     
-    public void removeNode (Node node) {
+    public void removeNode(Node node) {
         list.remove(node);
     }
     
-    public boolean getNode (Node node) {
+    public Node get(int x) {
+        return list.get(x);
+    }
+    
+    public boolean contains(Node node) {
         return list.contains(node);
     }
     
