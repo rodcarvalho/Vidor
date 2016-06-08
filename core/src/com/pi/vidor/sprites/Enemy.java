@@ -26,15 +26,13 @@ public abstract class Enemy extends Sprite {
         this.screen = screen;
         setPosition(x, y);
         defineEnemy();
-        velocity = new Vector2(-1, -2);
-        b2body.setActive(false);
-        setPosition(x, y);
-        velocity = new Vector2(.5f, 0);
+        velocity = new Vector2(0, 0);
+        b2body.setActive(true);
     }
     
     protected abstract void defineEnemy();
     public abstract void update(float dt);
-    public abstract void onCollision(Vidor vidor);
+    public abstract void onCollision();
     
     public void reverseVelocity(boolean x, boolean y) {
         if (x)

@@ -23,6 +23,7 @@ import com.pi.vidor.Tools.Box2DWorld;
 import com.pi.vidor.Tools.WorldContactListener;
 import com.pi.vidor.ai.Graph;
 import com.pi.vidor.sprites.Vidor;
+import com.pi.vidor.sprites.Wolf;
 
 /**
  *
@@ -34,7 +35,7 @@ public class PlayScreen implements Screen {
     private Main game;
     private TextureAtlas atlas;
     private Vidor player;
-    //private Wolf wolf;
+    private Wolf wolf;
     
     //câmera do jogo e o tratador da resolução
     private OrthographicCamera gamecam;
@@ -88,9 +89,9 @@ public class PlayScreen implements Screen {
         
         //
         player = new Vidor(this);
-        
+
         //
-        //wolf = new Wolf(this, 0 / Main.getPPM(), 0 / Main.getPPM());
+        wolf = new Wolf(this, 0 / Main.getPPM(), 0 / Main.getPPM());
         
         world.setContactListener(new WorldContactListener());
         
@@ -173,7 +174,7 @@ public class PlayScreen implements Screen {
         
         //
         player.update(delta);
-        //wolf.update(delta);
+        wolf.update(delta);
         hud.update(delta);
        
         // Room Transition
@@ -218,13 +219,13 @@ public class PlayScreen implements Screen {
         map_renderer.render();
         
         //renderiza as formas do mundo Box2D
-//        b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
         
         //Abre o 'container' ou 'batch' de sprites, desenha a textura passada no argumento nas coordenadas informadas e, por fim, fecha o 'batch'
         game.getBatch().setProjectionMatrix(gamecam.combined);
         game.getBatch().begin();
         player.draw(game.getBatch());
-        //wolf.draw(game.getBatch());
+        wolf.draw(game.getBatch());
         game.getBatch().end();
         
         //reconhece onde a câmera do jogo está e renderiza apenas o que pode ser visto por ela

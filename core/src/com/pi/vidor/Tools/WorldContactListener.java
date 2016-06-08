@@ -11,7 +11,11 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
+
+import com.pi.vidor.screens.PlayScreen;
+import com.pi.vidor.sprites.Enemy;
 import com.pi.vidor.sprites.InteractiveItem;
+import com.pi.vidor.sprites.Wolf;
 
 /**
  *
@@ -30,6 +34,9 @@ public class WorldContactListener implements ContactListener {
             
             if (object.getUserData() instanceof InteractiveItem) {
                 ((InteractiveItem) object.getUserData()).onCollision();
+            }
+            if (object.getUserData() instanceof Wolf) {
+                ((Wolf) object.getUserData()).onCollision();
             }
         }
         

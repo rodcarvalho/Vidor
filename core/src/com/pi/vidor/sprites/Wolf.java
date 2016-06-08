@@ -38,32 +38,6 @@ public class Wolf extends Enemy {
         setRegion(animation.getKeyFrame(state_time, true));
         b2body.setLinearVelocity(velocity);
     }
-    
-    
-//    public Wolf(){
-//        setHealth(2);
-//        setWorld();
-//    }
-
-//    @Override
-//    public void defineBody() {
-//        BodyDef bdef = new BodyDef();
-//        bdef.position.set(320 / Main.getPPM(), 240 / Main.getPPM());
-//        bdef.type = BodyDef.BodyType.DynamicBody;
-//        bdef.fixedRotation = true;
-//        bdef.linearDamping = 5.0f;
-//        b2body = world.createBody(bdef);
-//        b2body.setFixedRotation(true);
-//
-//        FixtureDef fdef = new FixtureDef();
-//        CircleShape shape = new CircleShape();
-//        shape.setRadius(8 / Main.getPPM());
-//
-//        fdef.shape = shape;
-//
-//        b2body.createFixture(fdef);
-//        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 
     @Override
     public void defineEnemy() {
@@ -71,13 +45,13 @@ public class Wolf extends Enemy {
         bdef.position.set(300 / Main.getPPM(), 220 / Main.getPPM());
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = true;
-        bdef.linearDamping = 5.0f;
+        bdef.linearDamping = 6.0f;
         b2body = world.createBody(bdef);
         b2body.setFixedRotation(true);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(8 / Main.getPPM());
+        shape.setRadius(12 / Main.getPPM());
 
         fdef.shape = shape;
 
@@ -86,7 +60,8 @@ public class Wolf extends Enemy {
     }
 
     @Override
-    public void onCollision(Vidor vidor) {
+    public void onCollision() {
+        System.out.println("COLIDIU!!!");
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -135,7 +136,7 @@ public class Vidor extends Sprite {
         b2body.createFixture(fdef).getUserData();
         
         PolygonShape head = new PolygonShape();
-        head.setAsBox(8 / Main.getPPM(), 8 / Main.getPPM());
+        head.setAsBox(10 / Main.getPPM(), 10 / Main.getPPM());
         //head.set(new Vector2(-2 / Main.getPPM(), 9 / Main.getPPM()), new Vector2(2 / Main.getPPM(), 9 / Main.getPPM()));
         fdef.shape = head;
         fdef.isSensor = true;
@@ -144,6 +145,4 @@ public class Vidor extends Sprite {
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-
 }
