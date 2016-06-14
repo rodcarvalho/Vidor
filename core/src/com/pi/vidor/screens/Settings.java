@@ -10,26 +10,19 @@ import com.pi.vidor.Main;
  *
  * @author Francisco
  */
-public class Menu extends AbstractScreen {
+public class Settings extends AbstractScreen {
     
     private Texture texture;
 
-    public Menu(Main game) {
+    public Settings(Main game) {
         super(game);
-        
-        this.texture = new Texture("menu.jpg");
+        this.texture = new Texture("menu1.jpg");
     }
 
     @Override
     public void handleInput(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            //getGame().getSm().push(new PlayScreen(getGame()));
-            getGame().setScreen(getGame().getSm().set(new PlayScreen(getGame())));
-            dispose();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            //getGame().getSm().push(new Settings(getGame()));
-            getGame().setScreen(getGame().getSm().set(new Settings(getGame())));
+            getGame().setScreen(getGame().getSm().setback());
             dispose();
         }
     }
@@ -47,10 +40,6 @@ public class Menu extends AbstractScreen {
         super.getGame().getBatch().begin();
         super.getGame().getBatch().draw(texture, 0, 0, Main.getWIDTH() / Main.getPPM(), Main.getHEIGHT() / Main.getPPM());
         super.getGame().getBatch().end();
-    }
-
-    public Texture getTexture() {
-        return texture;
     }
     
 }

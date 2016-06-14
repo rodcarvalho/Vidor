@@ -13,28 +13,28 @@ import java.util.ArrayList;
 
 public class Graph {
     
+    private Node[][] nodes;
     private int WIDTH;
     private int HEIGHT;
-    private int tileSize;
-    private Node[][] nodes;
+    private int TILESIZE;
     private ArrayList<Node> path;
-    private Astar a_star;
+    private Astar astar;
 
     public Graph(PlayScreen screen) {
         this.WIDTH = screen.getMapWidth();
         this.HEIGHT = screen.getMapHeight();
-        this.tileSize = 16;
+        this.TILESIZE = 16;
         
-        a_star = new Astar(this);
+        astar = new Astar(this);
         
         this.nodes = new Node[WIDTH][HEIGHT];
         
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                Vector2 nodePos = new Vector2((x * tileSize), (y * tileSize));
+                Vector2 nodePos = new Vector2((x * TILESIZE), (y * TILESIZE));
                 boolean collidable = true;
                 for(RectangleMapObject object : screen.getObstacles()) {
-                    if(object.getRectangle().overlaps(new Rectangle(nodePos.x, nodePos.y, tileSize, tileSize))) {
+                    if(object.getRectangle().overlaps(new Rectangle(nodePos.x, nodePos.y, TILESIZE, TILESIZE))) {
                             collidable = false;
                             break;
                     }
@@ -44,54 +44,35 @@ public class Graph {
             }
         }
         
-//        for (int x = 0; x < WIDTH; x++) {
-//            for (int y = 0; y < HEIGHT; y++) {
-//                if (x > 0) {
-//                    nodes[x][y].getAdj().insertNode(nodes[x -1][y]);
-//                }
-//                    //
-//                if (y > 0) {
-//                    nodes[x][y].getAdj().insertNode(nodes[x][y -1]);
-//                }
-//                    //
-//                if (x < WIDTH - 1) {
-//                    nodes[x][y].getAdj().insertNode(nodes[x + 1][y]);
-//                }
-//                    //
-//                if (y < HEIGHT - 1) {
-//                    nodes[x][y].getAdj().insertNode(nodes[x][y + 1]);
-//                }
-//            }
-//        }
     }
     
-    public ArrayList<Node> getNeighbours(Node node){
-        ArrayList<Node> neighbours = new ArrayList<Node>();
+    public ArrayList<Node> neighbors(Node node){
+        ArrayList<Node> neighbors = new ArrayList<Node>();
 
         for (int x = -1; x <= 1; x++){
             for (int y = -1; y <= 1; y++){
                 if(x == 0 && y == 0)
                     continue;
 
-                int checkX = node.getX() + x;
-                int checkY = node.getY() + y;
+                int X = node.getX() + x;
+                int Y = node.getY() + y;
 
-                if(checkX >= 0 && checkX < WIDTH && checkY >= 0 && checkY < HEIGHT){
-                    neighbours.add(nodes[checkX][checkY]);
+                if(X >= 0 && X < WIDTH && Y >= 0 && Y < HEIGHT){
+                    neighbors.add(nodes[X][Y]);
                 }
             }
         }
-        return neighbours;
+        return neighbors;
     }
     
-    public Node nodeFromXY(Vector2 pos){
-        int x = (int)((pos.x) / tileSize);
-        int y = (int)((pos.y) / tileSize);
+    public Node nodeXY(Vector2 pos){
+        int x = (int)((pos.x) / TILESIZE);
+        int y = (int)((pos.y) / TILESIZE);
         return getNode(x, y);
     }
     
-    public ArrayList<Node> find(Vector2 pos, Vector2 targetPos) {
-        a_star.Pathfinding(pos, targetPos);
+    public ArrayList<Node> findPath(Vector2 pos, Vector2 targetPos) {
+        astar.Pathfinding(pos, targetPos);
         return path;
     }
 

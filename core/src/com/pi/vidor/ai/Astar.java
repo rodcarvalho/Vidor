@@ -11,6 +11,7 @@ import java.util.HashSet;
  */
 
 public class Astar implements Heuristic {
+    
     private Graph graph;
     private List open;
     private HashSet<Node> closed;
@@ -22,8 +23,8 @@ public class Astar implements Heuristic {
     }
     
     public void Pathfinding(Vector2 start, Vector2 target) {
-        Node startNode = graph.nodeFromXY(start);
-        Node targetNode = graph.nodeFromXY(target);
+        Node startNode = graph.nodeXY(start);
+        Node targetNode = graph.nodeXY(target);
         
         open.insertNode(startNode);
         
@@ -40,18 +41,18 @@ public class Astar implements Heuristic {
             closed.add(currentNode);
 
             if(currentNode == targetNode){
-                retracePath(startNode, targetNode);
+                followPath(startNode, targetNode);
                 return;
             }
-
-            for (Node neighbour : graph.getNeighbours(currentNode)) {
+            
+            for (Node neighbour : graph.neighbors(currentNode)) {
                 if(!neighbour.isCollidable() || closed.contains(neighbour))
                     continue;
 
-                int newMovementCostToNeighbour = (currentNode.getG() + heuristic(currentNode, neighbour));
+                int newCost = (currentNode.getG() + heuristic(currentNode, neighbour));
 
-                if (!open.contains(neighbour) || newMovementCostToNeighbour < neighbour.getG()){
-                    neighbour.setG(newMovementCostToNeighbour);
+                if (!open.contains(neighbour) || newCost < neighbour.getG()){
+                    neighbour.setG(newCost);
                     neighbour.setH(heuristic(neighbour, targetNode));
                     neighbour.setParent(currentNode);
 
@@ -63,9 +64,9 @@ public class Astar implements Heuristic {
         }
     }
     
-    public void retracePath(Node startNode, Node endNode){
+    public void followPath(Node startNode, Node targetNode){
         ArrayList<Node> path = new ArrayList<Node>();
-        Node currentNode = endNode;
+        Node currentNode = targetNode;
 
         while (currentNode != startNode){
             path.add(currentNode);
@@ -75,10 +76,10 @@ public class Astar implements Heuristic {
         graph.setPath(reverse(path));
     }
     
-    public ArrayList<Node> reverse(ArrayList<Node> list) {
-        for(int i = 0, j = list.size() - 1; i < j; i++)
-            list.add(i, list.remove(j));
-        return list;
+    public ArrayList<Node> reverse(ArrayList<Node> path) {
+        for(int i = 0, j = path.size() - 1; i < j; i++)
+            path.add(i, path.remove(j));
+        return path;
     }
     
     @Override
